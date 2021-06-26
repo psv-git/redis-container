@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+
+    redis_db:
+        image: redis:alpine
+        container_name: redis_db
+        command: [ "redis-server", "/redis.conf" ]
+        deploy:
+            restart_policy:
+                condition: any
+        networks:
+            - redis_network
+        expose:
+            - 6379
+        volumes:
+            - ./data:/data/dump:rw
+            - ./logs:/data/logs:rw
+            - ./config/redis.conf:/redis.conf:rw
+
+networks:
+    redis_network:
+        name: redis_network
+        driver: bridge
